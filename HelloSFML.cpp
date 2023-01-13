@@ -4,45 +4,38 @@
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
-using namespace std;
-using namespace sf;
+#include "Game.h"
 
+
+using namespace std;
 
 int main()
 {
 	srand(time(NULL));
-	// Window
-	RenderWindow newWindow(VideoMode(1024, 900), "FirstGame", Style::Titlebar | Style::Close);
-	newWindow.setFramerateLimit(60);
 
-	Texture backgroundTexture;
-	// Game Loop
-	while (newWindow.isOpen())
-	{
-		Event ev;
-		// Event Polling 
-		while (newWindow.pollEvent(ev)) {
+	//Init the words vector
+	ifstream randomwordsFILE("randomwords.txt");
+	if (!randomwordsFILE.is_open())
+		return EXIT_FAILURE;
 
-			switch (ev.type)
-			{
-			case Event::Closed: 
-				newWindow.close();
-				break;
-			case Event::KeyPressed:
-				if (ev.key.code == Keyboard::Escape)
-					newWindow.close();
-				break;
-			default:
-				break;
-			}
-		}
-		//Update
-		newWindow.clear(); // clear the old frame
-
-
-		//Display
-		newWindow.display(); // display the new frame
+	vector<string> RandomWords;
+	RandomWords.reserve(3000);
+	string word;
+	while (!randomwordsFILE.eof()) {
+		randomwordsFILE >> word;
+		RandomWords.push_back(word);
 	}
+
+	// Game Object
+	Game game(RandomWords);
+
+	// Game Loop
+	while (game.isrunning()) {
+		game.pollevents();
+		game.update();
+		game.render();
+	}
+
 
 	// End of Game
 	return 0;

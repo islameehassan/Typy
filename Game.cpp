@@ -11,40 +11,65 @@ void Game::initText()
 		cout << "Could not load the GUI font!!!!\n";
 
 	// initialize texts
+	 
+	
 	//FloatingText
-	floatingWordsText.setFont(floatingWordsFont);
-	floatingWordsText.setCharacterSize(24);
-	floatingWordsText.move(15.f, -0);
+	FloatingWordsText.setFont(floatingWordsFont);
+	FloatingWordsText.setCharacterSize(24);
+	FloatingWordsText.move(15.f, -0);
 
 
 	//UserText
 	wordEntered = "";
-	userEnteredText.setFont(userEnteredFont);
-	userEnteredText.setCharacterSize(18);
-	userEnteredText.setPosition(25.f, window.getSize().y - 25.f);
-	userEnteredText.setFillColor(Color::Black);
+	UserEnteredText.setFont(userEnteredFont);
+	UserEnteredText.setCharacterSize(18);
+	UserEnteredText.setPosition(25.f, window.getSize().y - 25.f);
+	UserEnteredText.setFillColor(Color::Black);
 
 	//GUIText
-	titleText.setFont(guiFont);
-	titleText.setCharacterSize(40);
-	titleText.setFillColor(Color(127, 0, 255));
-	titleText.setString("TYPY");
-	titleText.setPosition(window.getSize().x - titleText.getGlobalBounds().width - 10.f, window.getSize().y - 40);
+	TitleText.setFont(guiFont);
+	TitleText.setCharacterSize(40);
+	TitleText.setFillColor(Color(127, 0, 255));
+	TitleText.setString("TYPY");
+	TitleText.setPosition(window.getSize().x - TitleText.getGlobalBounds().width - 10.f, window.getSize().y - 40);
 }
 
-void Game::initGUI()
+void Game::initSound()
+{
+	// initialize Buffers
+	if (!correctAnswerBuffer.loadFromFile("Sound/pop.wav"))
+		cout << "Could not load the pop buffer!!!!\n";
+	if (!wrongAnswerBuffer.loadFromFile("Sound/wrong.wav"))
+		cout << "Could not load the wrong buffer!!!!\n";
+
+	CorrectAnswer.setBuffer(correctAnswerBuffer);
+	WrongAnswer.setBuffer(wrongAnswerBuffer);
+}
+
+void Game::initUI()
 {
 	//Seperation Line
-	seperationline.setFillColor(Color::Black);
-	seperationline.setSize(Vector2f(window.getSize().x, 3.f));
-	seperationline.setPosition(0, window.getSize().y - 30);
+	SeperationLine.setFillColor(Color::Black);
+	SeperationLine.setSize(Vector2f(window.getSize().x, 3.f));
+	SeperationLine.setPosition(0, window.getSize().y - 30);
 
 	//Pointing Triangle
-	pointingtraingle.setRadius(10.f);
-	pointingtraingle.setFillColor(Color::Black);
-	pointingtraingle.setPointCount(3);
-	pointingtraingle.setPosition(20.f, window.getSize().y - pointingtraingle.getRadius() * 2.3f);
-	pointingtraingle.setRotation(90.f);
+	TextStartSymbol.setRadius(10.f);
+	TextStartSymbol.setFillColor(Color::Black);
+	TextStartSymbol.setPointCount(3);
+	TextStartSymbol.setPosition(20.f, window.getSize().y - TextStartSymbol.getRadius() * 2.3f);
+	TextStartSymbol.setRotation(90.f);
+
+	//Game Bar & Its Frame
+	GameBarFrame.setSize(Vector2f(0.6f * window.getSize().x, 20.f));
+	GameBarFrame.setFillColor(Color::White);
+	GameBarFrame.setOutlineColor(Color(127, 0, 255));
+	GameBarFrame.setOutlineThickness(2.f);
+	GameBarFrame.setPosition(0.2f * window.getSize().x, 5.f);
+
+	GameBar.setSize((Vector2f(0.06f * matchedWords * window.getSize().x, 20.f)));
+	GameBar.setFillColor(Color::Black);
+	GameBar.setPosition(0.2f * window.getSize().x, 5.f);
 }
 
 Game::Game(vector<string> RandomWords)
@@ -55,14 +80,18 @@ Game::Game(vector<string> RandomWords)
 	
 	//Words
 	this->Words = RandomWords;
-
-	spacePressed = false;
 	wordMatched = false;
-	//Text
-	initText();
+	spacePressed = false;
+	matchedWords = 0;
+
+	//Sound
+	initSound();
 
 	//GUI
-	initGUI();
+	initUI();
+
+	//Text
+	initText();
 
 }
 
@@ -86,13 +115,15 @@ void Game::updatefloatingwords()
 	for (int i = 0; i < WordsOnScreen.size(); i++) {
 		string currentword = static_cast<string>(WordsOnScreen[i].getString());
 
-		WordsOnScreen[i].move(1.3f, 0);
+		WordsOnScreen[i].move(1.2f, 0);
 		if (WordsOnScreen[i].getPosition().x > WINDOWWIDTH)
 			WordsOnScreen.erase(WordsOnScreen.begin() + i);
-		else if (spacePressed && wordEntered == currentword) {
-			WordsOnScreen.erase(WordsOnScreen.begin() + i);
-			spacePressed = false;
-			wordMatched = true;
+		else if (spacePressed) {
+			if (wordEntered == currentword) {
+				WordsOnScreen.erase(WordsOnScreen.begin() + i);
+				matchedWords++;
+				wordMatched = true;
+			}
 		}
 	}
 
@@ -106,7 +137,7 @@ void Game::updatefloatingwords()
 			while (prevWordIndex == wordIndex) {
 				wordIndex = rand() % MAXWORDS;
 			}
-			floatingWordsText.setString(Words[wordIndex]);
+			FloatingWordsText.setString(Words[wordIndex]);
 
 			// Set a color
 			int color = rand() % 3;
@@ -126,27 +157,37 @@ void Game::updatefloatingwords()
 				wordColor = Color::Blue;
 				break;
 			}
-			floatingWordsText.setFillColor(wordColor);
+			FloatingWordsText.setFillColor(wordColor);
 
 			int xoffset = 150;
-			floatingWordsText.setPosition(-floatingWordsText.getGlobalBounds().width - (rand() % xoffset), (wordsSoFar + 1) * wordSpacing);
-			WordsOnScreen.push_back(floatingWordsText);
+			FloatingWordsText.setPosition(-FloatingWordsText.getGlobalBounds().width - (rand() % xoffset), (wordsSoFar + 1) * wordSpacing);
+			WordsOnScreen.push_back(FloatingWordsText);
 
 			wordsSoFar++;
 		}
 	}
-
-
 }
 
-void Game::updategui()
+void Game::updateUI()
 {
 	if (!wordMatched)
-		userEnteredText.setString(wordEntered);
+		UserEnteredText.setString(wordEntered);
 	else {
 		wordEntered = "";
-		userEnteredText.setString(wordEntered);
-		wordMatched = false;
+		UserEnteredText.setString(wordEntered);
+	}
+
+	//Game Bar
+	GameBar.setSize(Vector2f(0.06 * matchedWords * window.getSize().x, GameBar.getSize().y));
+}
+
+void Game::updatesound()
+{
+	if (spacePressed) {
+		if (wordMatched)
+			CorrectAnswer.play();
+		else
+			WrongAnswer.play();
 	}
 }
 
@@ -176,28 +217,34 @@ void Game::pollevents()
 }
 
 void Game::update()
-{
+{	
 	updatefloatingwords();
-	updategui();
+	updatesound();
+	updateUI();
+	spacePressed = false;
+	wordMatched = false;
 }
 
 void Game::render()
 {
 	window.clear(Color::White);
 
-	//Draw new content
+	//Draw new content & play sound
 	for (auto& tx : WordsOnScreen)
 		window.draw(tx);
-	window.draw(userEnteredText);
-	window.draw(titleText);
-	window.draw(seperationline);
-	window.draw(pointingtraingle);
+	window.draw(UserEnteredText);
+	renderUI();
 
 	// Display
 	window.display();
 }
 
-void Game::renderGUI()
+void Game::renderUI()
 {
-
+	window.draw(TitleText);
+	window.draw(SeperationLine);
+	window.draw(TextStartSymbol);
+	window.draw(GameBarFrame);
+	window.draw(GameBar);
 }
+

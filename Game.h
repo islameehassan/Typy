@@ -18,6 +18,7 @@ const int MAXWORDS = 2466;
 
 const int WINDOWHEIGHT = 400;
 const int WINDOWWIDTH = 800;
+
 class Game {
 	RenderWindow window;
 	Event ev;
@@ -26,6 +27,7 @@ class Game {
 	vector<Text> WordsOnScreen;
 
 	string wordEntered;
+	int matchedWords;
 	
 	
 	// Fonts and Texts
@@ -33,22 +35,29 @@ class Game {
 	Font userEnteredFont;
 	Font guiFont;
 	
-	Text floatingWordsText;
-	Text userEnteredText;
-	Text titleText;
-	Text levelText;
+	Text FloatingWordsText;
+	Text UserEnteredText;
+	Text TitleText;
+	Text LevelText;
 
 	/*bool gameOver;*/
-	bool spacePressed;
 	bool wordMatched;
+	bool spacePressed;
 
-	RectangleShape seperationline;
+	RectangleShape SeperationLine;
 	RectangleShape GameBar;
+	RectangleShape GameBarFrame;
+	CircleShape TextStartSymbol; 
 
-	CircleShape pointingtraingle; 
+	SoundBuffer correctAnswerBuffer;
+	SoundBuffer wrongAnswerBuffer;
+
+	Sound CorrectAnswer;
+	Sound WrongAnswer;
 
 	void initText();
-	void initGUI();
+	void initSound();
+	void initUI();
 
 public:
 	Game(vector<string> words);
@@ -58,9 +67,10 @@ public:
 	const bool gameover() const;
 
 	void updatefloatingwords(); // push new words to the screen
-	void updategui();
+	void updatesound();
+	void updateUI();
 	void pollevents();
 	void update();
 	void render();
-	void renderGUI();
+	void renderUI();
 };

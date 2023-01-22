@@ -21,10 +21,17 @@ int main()
 	vector<string> RandomWords;
 	RandomWords.reserve(3000);
 	string word;
+	int lines = 0;
+	float total = 0;
 	while (!randomwordsFILE.eof()) {
 		randomwordsFILE >> word;
 		RandomWords.push_back(word);
+		total += word.length();
+		lines++;
 	}
+
+
+	cout << total/lines << " ";
 
 	// Game Object
 	Game game(RandomWords);

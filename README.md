@@ -13,6 +13,5 @@ refer to [SFML](https://www.sfml-dev.org/) for installation of the library and t
 - Calculates the net gross speed according to the formulas [here](https://www.speedtypingonline.com/typing-equations)
 - Let you know the number of errors made so far as your playing the game
 - There is no time limit, but you will lose if you reach 10 errors
-- 
-##UI
-![alt text](https://github.com/islameehassan/Typy/blob/main/UI.png?raw=true])
+## UI
+![alt text](https://github.com/islameehassan/Typy/blob/main/Images/UI.png?raw=true])

@@ -11,7 +11,8 @@ refer to [SFML](https://www.sfml-dev.org/) for installation of the library and t
 
 ## Features
 - Calculates the net gross speed according to the formulas [here](https://www.speedtypingonline.com/typing-equations)
-- Let you know the number of errors made so far as your playing the game
+- Let you know the number of errors made so far as your playing the game.
+- The user has a rank according to their speed, e.g., speed <=20 is a newbie. 
 - There is no time limit, but you will lose if you reach 15 errors
 ## UI
 ![alt text](https://github.com/islameehassan/Typy/blob/main/Images/UI.png?raw=true])

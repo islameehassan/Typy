@@ -15,4 +15,4 @@ refer to [SFML](https://www.sfml-dev.org/) for installation of the library and t
 - There is no time limit, but you will lose if you reach 10 errors
 - 
 ##UI
-![alt text](https://github.com/[islameehassan]/[Typy]/blob/[main]/UI.png?raw=true]
+![alt text](https://github.com/islameehassan/[Typy]/blob/main/UI.png?raw=true]

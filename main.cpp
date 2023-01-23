@@ -1,9 +1,4 @@
 #include <bits/stdc++.h>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
 #include "Game.h"
 
 
@@ -29,9 +24,7 @@ int main()
 		total += word.length();
 		lines++;
 	}
-
-
-	cout << total/lines << " ";
+	cout << "Words Average Length is: " << total / lines << '\n';
 
 	// Game Object
 	Game game(RandomWords);
@@ -42,8 +35,6 @@ int main()
 		game.update();
 		game.render();
 	}
-
-
 	// End of Game
 	return 0;
 }

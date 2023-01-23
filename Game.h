@@ -13,15 +13,6 @@ using namespace sf;
 	Main class that wraps all methods and attributes required for running the game
 */
 
-const int MAXWORDSONSCREEN = 8;
-const int MAXWORDS = 2466;
-const int MAXERRORS = 15;
-
-const int AVERAGEWORDLENGTH = 6;
-
-const int WINDOWHEIGHT = 400;
-const int WINDOWWIDTH = 800;
-
 /*
 * Levels according to speed(WPM):
 * 1. Newbie (0 - 10)
@@ -32,14 +23,24 @@ const int WINDOWWIDTH = 800;
 * 6. GrandMaster ( > 50)
 */
 
+
+const int MAX_WORDS_ONSCREEN = 8;
+const int MAX_WORDS = 2466;
+const int MAX_ErrorsText = 15;
+const int AVERAGEWORD_LENGTH = 6;
+const int WINDOW_HEIGHT = 400;
+const int WINDOW_WIDTH = 800;
+
 class Game {
 	RenderWindow window;
 	Event ev;
-	Clock* GameCLock;
+	Clock* GameClock;
 	Time GameTime;
 
 	vector<string> Words;
 	vector<Text> WordsOnScreen;
+
+	set<string> UncorrectedErrors;
 
 	string wordEntered;
 	string rank;
@@ -50,16 +51,16 @@ class Game {
 	
 	
 	// Fonts and Texts
-	Font floatingWordsFont;
-	Font userEnteredFont;
+	Font arialFont;
 	Font guiFont;
 	
 	Text FloatingWordsText;
 	Text UserEnteredText;
+	Text SuggestedWordText;
 	Text TitleText;
 	Text SpeedText;
 	Text LevelText;
-	Text Errors;
+	Text ErrorsText;
 	Text GameOverText;
 	Text ResetInstructionsText;
 
@@ -84,6 +85,7 @@ class Game {
 	void initUI();
 
 	bool gameover();
+	bool checkMatching(string src, string dst);
 	void reset();
 
 public:

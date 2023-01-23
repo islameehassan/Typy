@@ -3,28 +3,30 @@
 void Game::initText()
 {
 	// initialize fonts
-	if (!floatingWordsFont.loadFromFile("Fonts/arial.ttf"))
+	if (!arialFont.loadFromFile("Fonts/arial.ttf"))
 		cout << "Could not load the floating words font!!!!\n";
-	if (!userEnteredFont.loadFromFile("Fonts/arial.ttf"))
-		cout << "Could not load the user entered font!!!!\n";
 	if(!guiFont.loadFromFile("Fonts/Sunny Spells.ttf"))
 		cout << "Could not load the GUI font!!!!\n";
 
 	// initialize texts
 	 
-	
 	//FloatingText
-	FloatingWordsText.setFont(floatingWordsFont);
+	FloatingWordsText.setFont(arialFont);
 	FloatingWordsText.setCharacterSize(24);
 	FloatingWordsText.move(5.f, -0);
 
 
 	//UserText
 	wordEntered = "";
-	UserEnteredText.setFont(userEnteredFont);
+	UserEnteredText.setFont(arialFont);
 	UserEnteredText.setCharacterSize(18);
 	UserEnteredText.setPosition(25.f, window.getSize().y - 25.f);
 	UserEnteredText.setFillColor(Color::Black);
+
+	SuggestedWordText.setFont(arialFont);
+	SuggestedWordText.setCharacterSize(18);
+	SuggestedWordText.setPosition(UserEnteredText.getPosition());
+	SuggestedWordText.setFillColor(Color(0,0,0,128));
 
 	//GUIText
 	TitleText.setFont(guiFont);
@@ -45,11 +47,11 @@ void Game::initText()
 	LevelText.setString("Rank: " + rank);
 	LevelText.setPosition(window.getSize().x - LevelText.getGlobalBounds().width - 10.f, 0.f);
 
-	Errors.setFont(guiFont);
-	Errors.setCharacterSize(20);
-	Errors.setFillColor(Color::Black);
-	Errors.setString("Erros: " + to_string(wrongAnswers));
-	Errors.setPosition(0.5 * window.getSize().x - Errors.getGlobalBounds().width, 0.f);
+	ErrorsText.setFont(guiFont);
+	ErrorsText.setCharacterSize(20);
+	ErrorsText.setFillColor(Color::Black);
+	ErrorsText.setString("Errors: " + to_string(wrongAnswers));
+	ErrorsText.setPosition(0.5 * window.getSize().x - ErrorsText.getGlobalBounds().width, 0.f);
 
 	GameOverText.setFont(guiFont);
 	GameOverText.setCharacterSize(56);
@@ -78,7 +80,6 @@ void Game::initSound()
 
 	CorrectAnswer.setPlayingOffset(seconds(0.25f));
 	WrongAnswer.setPlayingOffset(seconds(0.25f));
-
 }
 
 void Game::initUI()
@@ -109,13 +110,27 @@ void Game::initUI()
 
 bool Game::gameover()
 {
-	return wrongAnswers > MAXERRORS;
+	return wrongAnswers > MAX_ErrorsText;
+}
+
+bool Game::checkMatching(string src, string dst)
+{
+	// No matching if source is longer
+	if (src.length() == 0) {
+		return false;
+	}
+
+	for (int i = 0; i < src.length() && i < dst.length(); i++) {
+		if (src[i] != dst[i])
+			return false;
+	}
+	return true;
 }
 
 void Game::reset()
 {
 	GameTime = Time();
-	GameCLock->restart();
+	GameClock->restart();
 
 	//Words
 	WordsOnScreen.clear();
@@ -130,7 +145,7 @@ void Game::reset()
 	rank = "newbie";
 	wordEntered = "";
 
-	Errors.setString("Errors: " + to_string(wrongAnswers));
+	ErrorsText.setString("Errors: " + to_string(wrongAnswers));
 	SpeedText.setString("Speed(WPM): " + to_string(speed));
 	LevelText.setString("Rank: " + rank);
 }
@@ -138,11 +153,11 @@ void Game::reset()
 Game::Game(vector<string> RandomWords)
 {
 	// Window
-	window.create(VideoMode(WINDOWWIDTH, WINDOWHEIGHT), "TypingSpeed");
+	window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "TypingSpeed");
 	window.setFramerateLimit(60);
 
 	GameTime = Time();
-	GameCLock = new Clock;
+	GameClock = new Clock;
 	
 	//Words
 	this->Words = RandomWords;
@@ -170,6 +185,10 @@ Game::Game(vector<string> RandomWords)
 
 Game::~Game()
 {
+	cout << matchedWordCharacterLength << " " << GameTime.asSeconds() << '\n';
+
+	for (string str : UncorrectedErrors)
+		cout << str << "\n";
 }
 
 const bool Game::isrunning() const
@@ -184,27 +203,36 @@ void Game::updatefloatingwords()
 		string currentword = static_cast<string>(WordsOnScreen[i].getString());
 
 		WordsOnScreen[i].move(0.5f, 0);
-		if (WordsOnScreen[i].getPosition().x > WINDOWWIDTH)
+		if (WordsOnScreen[i].getPosition().x > WINDOW_WIDTH)
 			WordsOnScreen.erase(WordsOnScreen.begin() + i);
 		else if (spacePressed) {
 			if (wordEntered == currentword) {
 				WordsOnScreen.erase(WordsOnScreen.begin() + i);
 				correctAnswers++;
 				matchedWordCharacterLength += wordEntered.length();
+				UncorrectedErrors.erase(currentword);
 				wordMatched = true;
 			}
 		}
+	}
+	// No matching has occured
+	string suggested = static_cast<string>(SuggestedWordText.getString());
+	if (spacePressed && !wordMatched) {
+		if (suggested == "" && wordEntered.length() != 0) // the user has entered a non-existant word
+			UncorrectedErrors.insert(wordEntered);
+		else if (suggested.length() != 0)
+			UncorrectedErrors.insert(suggested);
 	}
 
 	//Choose a random word from the list
 	int wordSpacing = 40;
 	int wordsSoFar = WordsOnScreen.size();
 	if (wordsSoFar == 0) {
-		while (wordsSoFar < MAXWORDSONSCREEN) {
+		while (wordsSoFar < MAX_WORDS_ONSCREEN) {
 			int prevWordIndex = -1;
-			int wordIndex = rand() % MAXWORDS;
+			int wordIndex = rand() % MAX_WORDS;
 			while (prevWordIndex == wordIndex) {
-				wordIndex = rand() % MAXWORDS;
+				wordIndex = rand() % MAX_WORDS;
 			}
 			FloatingWordsText.setString(Words[wordIndex]);
 
@@ -244,8 +272,21 @@ void Game::updateUI()
 	if (!wordMatched)
 		UserEnteredText.setString(wordEntered);
 	else {
+		// Clearing the text
 		wordEntered = "";
 		UserEnteredText.setString(wordEntered);
+		SuggestedWordText.setString(wordEntered);
+	}
+
+	for (Text& word : WordsOnScreen)
+	{
+		if (checkMatching(wordEntered, static_cast<string>(word.getString()))) {
+			SuggestedWordText.setString(word.getString());
+			break;
+		}
+		else {
+			SuggestedWordText.setString("");
+		}
 	}
 
 	//Game Bar
@@ -256,8 +297,10 @@ void Game::updateUI()
 	//Speed
 	//Update iff a space is pressed to avoid continuous change
 	if (spacePressed) {
-		GameTime = GameCLock->getElapsedTime();
-		speed = 60 * (matchedWordCharacterLength / AVERAGEWORDLENGTH) / (GameTime.asSeconds());
+		GameTime = GameClock->getElapsedTime();
+		speed = 60 * ((matchedWordCharacterLength / AVERAGEWORD_LENGTH) - (int)UncorrectedErrors.size()) / (GameTime.asSeconds());
+		if (speed < 0)
+			speed = 0;
 		SpeedText.setString("Speed(WPM): " + to_string(speed));
 	}
 
@@ -282,10 +325,10 @@ void Game::updateUI()
 	LevelText.setString("Rank: " + rank);
 	LevelText.setPosition(Vector2f(window.getSize().x - LevelText.getGlobalBounds().width - 10.f, GameBarFrame.getPosition().y));
 
-	//Errors
+	//ErrorsText
 	if (spacePressed && !wordMatched) {
 		wrongAnswers++;
-		Errors.setString("Errors: " + to_string(wrongAnswers));
+		ErrorsText.setString("Errors: " + to_string(wrongAnswers));
 	}
 
 
@@ -349,7 +392,7 @@ void Game::update()
 			reset();
 	}
 
-	cout << matchedWordCharacterLength << "\n";
+	cout << UncorrectedErrors.size() << "\n";
 }
 
 void Game::render()
@@ -360,6 +403,7 @@ void Game::render()
 	for (auto& tx : WordsOnScreen)
 		window.draw(tx);
 	window.draw(UserEnteredText);
+	window.draw(SuggestedWordText);
 	renderUI();
 
 	// Display
@@ -371,7 +415,7 @@ void Game::renderUI()
 	window.draw(TitleText);
 	window.draw(SpeedText);
 	window.draw(LevelText);
-	window.draw(Errors);
+	window.draw(ErrorsText);
 	window.draw(SeperationLine);
 	window.draw(TextStartSymbol);
 	if (gameover()) {

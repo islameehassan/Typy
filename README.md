@@ -7,7 +7,7 @@ refer to [SFML](https://www.sfml-dev.org/) for installation of the library and t
 
 ## GamePlay
 - Words are not typed one by one as in typical typing speed games; however, 8 words appear on the screen moving from the very left to the right.
-- Each time you type a word correctly, the word disappears and a popping sound happens.
+- Each time you type a word correctly, the word disappears and a popping sound plays.
 
 ## Features
 - Calculate the net gross speed according to the formulas [here](https://www.speedtypingonline.com/typing-equations).

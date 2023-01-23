@@ -260,8 +260,10 @@ void Game::updatefloatingwords()
 void Game::updateUI()
 {
 	//Word Entry Box
-	if (!wordMatched)
-		UserEnteredText.setString(wordEntered);
+	if (!wordMatched) {
+		if(UserEnteredText.getString().getSize() <= 40)
+			UserEnteredText.setString(wordEntered);
+	}
 	else {
 		// Clearing the text
 		wordEntered = "";

@@ -15,18 +15,18 @@ using namespace sf;
 
 /*
 * Levels according to speed(WPM):
-* 1. Newbie (0 - 10)
-* 2. Pubil (11 - 20)
-* 3. Specialist (21 - 30)
-* 4. Expert (31 - 40)
-* 5. Master (41 - 50)
-* 6. GrandMaster ( > 50)
+* 1. Newbie (0 - 20)
+* 2. Pubil (21 - 40)
+* 3. Specialist (40 - 60)
+* 4. Expert (61 - 70)
+* 5. Master (71 - 80)
+* 6. GrandMaster ( > 80)
 */
 
 
 const int MAX_WORDS_ONSCREEN = 8;
 const int MAX_WORDS = 2466;
-const int MAX_ErrorsText = 15;
+const int MAX_Errors = 15;
 const int AVERAGEWORD_LENGTH = 6;
 const int WINDOW_HEIGHT = 400;
 const int WINDOW_WIDTH = 800;
@@ -36,18 +36,6 @@ class Game {
 	Event ev;
 	Clock* GameClock;
 	Time GameTime;
-
-	vector<string> Words;
-	vector<Text> WordsOnScreen;
-
-	set<string> UncorrectedErrors;
-
-	string wordEntered;
-	string rank;
-	float matchedWordCharacterLength;
-	int correctAnswers;
-	int wrongAnswers;
-	int speed;
 	
 	
 	// Fonts and Texts
@@ -59,34 +47,45 @@ class Game {
 	Text SuggestedWordText;
 	Text TitleText;
 	Text SpeedText;
-	Text LevelText;
+	Text RankText;
 	Text ErrorsText;
 	Text GameOverText;
 	Text ResetInstructionsText;
 
-
-	/*bool gameOver;*/
-	bool wordMatched;
-	bool spacePressed;
-
+	//Shapes
 	RectangleShape SeperationLine;
-	RectangleShape GameBar;
-	RectangleShape GameBarFrame;
 	CircleShape TextStartSymbol; 
 
+	//Sound
 	SoundBuffer correctAnswerBuffer;
 	SoundBuffer wrongAnswerBuffer;
 
 	Sound CorrectAnswer;
 	Sound WrongAnswer;
 
+	//Variables and containers
+	vector<string> Words;
+	vector<Text> WordsOnScreen;
+	set<string> UncorrectedErrors;
+
+	string wordEntered;
+	string rank;
+	float matchedWordCharacterLength;
+	int correctAnswers;
+	int wrongAnswers;
+	int speed;
+	bool wordMatched;
+	bool spacePressed;
+
+
+	// Private Methods
 	void initText();
 	void initSound();
 	void initUI();
+	void reset(); // reset the game
 
 	bool gameover();
-	bool checkMatching(string src, string dst);
-	void reset();
+	bool checkMatching(string src, string dst); // check if src is substring of dst, starting from the first character.
 
 public:
 	Game(vector<string> words);
@@ -94,14 +93,14 @@ public:
 
 	const bool isrunning() const;
 
-
+	//handle events
 	void pollevents();
 
-	void updatefloatingwords(); // push new words to the screen
+	//update the window
+	void updatefloatingwords(); //push new words to the screen
 	void updatesound();
 	void updateUI();
-	void update();
 
-	void renderUI(); 
+	void update();
 	void render();
 };

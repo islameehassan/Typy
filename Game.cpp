@@ -41,11 +41,11 @@ void Game::initText()
 	SpeedText.setString("Speed(WPM): " + to_string(speed));
 	SpeedText.setPosition(0.f,0.f);
 	
-	LevelText.setFont(guiFont);
-	LevelText.setCharacterSize(20);
-	LevelText.setFillColor(Color::Black);
-	LevelText.setString("Rank: " + rank);
-	LevelText.setPosition(window.getSize().x - LevelText.getGlobalBounds().width - 10.f, 0.f);
+	RankText.setFont(guiFont);
+	RankText.setCharacterSize(20);
+	RankText.setFillColor(Color::Black);
+	RankText.setString("Rank: " + rank);
+	RankText.setPosition(window.getSize().x - RankText.getGlobalBounds().width - 10.f, 0.f);
 
 	ErrorsText.setFont(guiFont);
 	ErrorsText.setCharacterSize(20);
@@ -64,7 +64,6 @@ void Game::initText()
 	ResetInstructionsText.setFillColor(Color::Black);
 	ResetInstructionsText.setString("Press R to play again");
 	ResetInstructionsText.setPosition(GameOverText.getPosition() + Vector2f(25.f, GameOverText.getGlobalBounds().height/2 + 5.f));
-
 }
 
 void Game::initSound()
@@ -84,6 +83,7 @@ void Game::initSound()
 
 void Game::initUI()
 {
+										/*Text and Shapes*/
 	//Seperation Line
 	SeperationLine.setFillColor(Color::Black);
 	SeperationLine.setSize(Vector2f(window.getSize().x, 3.f));
@@ -96,26 +96,17 @@ void Game::initUI()
 	TextStartSymbol.setPosition(20.f, window.getSize().y - TextStartSymbol.getRadius() * 2.3f);
 	TextStartSymbol.setRotation(90.f);
 
-	//	//Game Bar & Its Frame
-	//	GameBarFrame.setSize(Vector2f(0.6f * window.getSize().x, 20.f));
-	//	GameBarFrame.setFillColor(Color::White);
-	//	GameBarFrame.setOutlineColor(Color::Black);
-	//	GameBarFrame.setOutlineThickness(2.f);
-	//	GameBarFrame.setPosition(0.2f * window.getSize().x, 5.f);
-	//
-	//	GameBar.setSize((Vector2f(0.06f * correctAnswers * window.getSize().x, 20.f)));
-	//	GameBar.setFillColor(Color::Black);
-	//	GameBar.setPosition(0.2f * window.getSize().x, 5.f);
+	//Text
+	initText();
 }
 
 bool Game::gameover()
 {
-	return wrongAnswers > MAX_ErrorsText;
+	return wrongAnswers > MAX_Errors;
 }
 
 bool Game::checkMatching(string src, string dst)
 {
-	// No matching if source is longer
 	if (src.length() == 0) {
 		return false;
 	}
@@ -134,11 +125,11 @@ void Game::reset()
 
 	//Words
 	WordsOnScreen.clear();
+	UncorrectedErrors.clear();
 	wordMatched = false;
 	spacePressed = false;
 
 	// User's Info
-	correctAnswers = 0;
 	wrongAnswers = 0;
 	speed = 0;
 	matchedWordCharacterLength = 0;
@@ -147,7 +138,7 @@ void Game::reset()
 
 	ErrorsText.setString("Errors: " + to_string(wrongAnswers));
 	SpeedText.setString("Speed(WPM): " + to_string(speed));
-	LevelText.setString("Rank: " + rank);
+	RankText.setString("Rank: " + rank);
 }
 
 Game::Game(vector<string> RandomWords)
@@ -165,7 +156,6 @@ Game::Game(vector<string> RandomWords)
 	spacePressed = false;
 
 	// User's Info
-	correctAnswers = 0;
 	wrongAnswers = 0;
 	speed = 0;
 	matchedWordCharacterLength = 0;
@@ -175,10 +165,7 @@ Game::Game(vector<string> RandomWords)
 	//Sound
 	initSound();
 
-	//Text
-	initText();
-
-	//GUI
+	//UI
 	initUI();
 
 }
@@ -198,6 +185,9 @@ const bool Game::isrunning() const
 
 void Game::updatefloatingwords()
 {
+								/*Handling new words pushed into the screen and organizes the logic based upon entering 
+														a correct or wrong word by the user*/
+
 	// Move words and remove outofbound ones
 	for (int i = 0; i < WordsOnScreen.size(); i++) {
 		string currentword = static_cast<string>(WordsOnScreen[i].getString());
@@ -206,15 +196,16 @@ void Game::updatefloatingwords()
 		if (WordsOnScreen[i].getPosition().x > WINDOW_WIDTH)
 			WordsOnScreen.erase(WordsOnScreen.begin() + i);
 		else if (spacePressed) {
+			// word matched
 			if (wordEntered == currentword) {
 				WordsOnScreen.erase(WordsOnScreen.begin() + i);
-				correctAnswers++;
-				matchedWordCharacterLength += wordEntered.length();
+				matchedWordCharacterLength += wordEntered.length(); // to calculate the speed
 				UncorrectedErrors.erase(currentword);
 				wordMatched = true;
 			}
 		}
 	}
+
 	// No matching has occured
 	string suggested = static_cast<string>(SuggestedWordText.getString());
 	if (spacePressed && !wordMatched) {
@@ -289,11 +280,7 @@ void Game::updateUI()
 		}
 	}
 
-	//Game Bar
-	GameBar.setSize(Vector2f(0.06 * 0 * window.getSize().x, GameBar.getSize().y));
 
-	//Texts
-	
 	//Speed
 	//Update iff a space is pressed to avoid continuous change
 	if (spacePressed) {
@@ -304,26 +291,26 @@ void Game::updateUI()
 		SpeedText.setString("Speed(WPM): " + to_string(speed));
 	}
 
-	//Level
-	if (speed <= 10) {
+	//rank
+	if (speed <= 20) {
 		rank = "newbie";
 	}
-	else if (speed <= 20) {
-		rank = "publi";
+	else if (speed <= 40) {
+		rank = "pubil";
 	}
-	else if (speed <= 30) {
+	else if (speed <= 60) {
 		rank = "specialist";
 	}
-	else if (speed <= 40) {
+	else if (speed <= 70) {
 		rank = "expert";
 	}
-	else if (speed <= 50) {
+	else if (speed <= 80) {
 		rank = "master";
 	}
 	else
 		rank = "grandmaseter";
-	LevelText.setString("Rank: " + rank);
-	LevelText.setPosition(Vector2f(window.getSize().x - LevelText.getGlobalBounds().width - 10.f, GameBarFrame.getPosition().y));
+	RankText.setString("Rank: " + rank);
+	RankText.setPosition(Vector2f(window.getSize().x - RankText.getGlobalBounds().width - 10.f, 0));
 
 	//ErrorsText
 	if (spacePressed && !wordMatched) {
@@ -331,7 +318,7 @@ void Game::updateUI()
 		ErrorsText.setString("Errors: " + to_string(wrongAnswers));
 	}
 
-
+	// negate
 	if (spacePressed)
 		spacePressed = false;
 	if (wordMatched)
@@ -391,8 +378,6 @@ void Game::update()
 		if (Keyboard::isKeyPressed(Keyboard::R))
 			reset();
 	}
-
-	cout << UncorrectedErrors.size() << "\n";
 }
 
 void Game::render()
@@ -402,19 +387,12 @@ void Game::render()
 	//Draw new content & play sound
 	for (auto& tx : WordsOnScreen)
 		window.draw(tx);
+
 	window.draw(UserEnteredText);
 	window.draw(SuggestedWordText);
-	renderUI();
-
-	// Display
-	window.display();
-}
-
-void Game::renderUI()
-{
 	window.draw(TitleText);
 	window.draw(SpeedText);
-	window.draw(LevelText);
+	window.draw(RankText);
 	window.draw(ErrorsText);
 	window.draw(SeperationLine);
 	window.draw(TextStartSymbol);
@@ -422,7 +400,9 @@ void Game::renderUI()
 		window.draw(GameOverText);
 		window.draw(ResetInstructionsText);
 	}
-	/*window.draw(GameBarFrame);
-	window.draw(GameBar);*/
+
+	// Display
+	window.display();
 }
+
 

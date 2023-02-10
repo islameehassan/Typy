@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/islam/sfml/Typy/build",
+  "command": "/usr/bin/c++  -I/home/islam/sfml/Typy/build -I/home/islam/sfml/Typy/include -g -std=c++17 -o CMakeFiles/Typy.dir/src/Game.cpp.o -c /home/islam/sfml/Typy/src/Game.cpp",
+  "file": "/home/islam/sfml/Typy/src/Game.cpp"
+},
+{
+  "directory": "/home/islam/sfml/Typy/build",
+  "command": "/usr/bin/c++  -I/home/islam/sfml/Typy/build -I/home/islam/sfml/Typy/include -g -std=c++17 -o CMakeFiles/Typy.dir/src/main.cpp.o -c /home/islam/sfml/Typy/src/main.cpp",
+  "file": "/home/islam/sfml/Typy/src/main.cpp"
+}
+]

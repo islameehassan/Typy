@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/islam/sfml/Typy/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/islam/sfml/Typy/cmake-build-debug -I/home/islam/sfml/Typy/include -g -fdiagnostics-color=always -std=c++17 -o CMakeFiles/Typy.dir/main.cpp.o -c /home/islam/sfml/Typy/main.cpp",
+  "file": "/home/islam/sfml/Typy/main.cpp"
+},
+{
+  "directory": "/home/islam/sfml/Typy/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/islam/sfml/Typy/cmake-build-debug -I/home/islam/sfml/Typy/include -g -fdiagnostics-color=always -std=c++17 -o CMakeFiles/Typy.dir/Game.cpp.o -c /home/islam/sfml/Typy/Game.cpp",
+  "file": "/home/islam/sfml/Typy/Game.cpp"
+}
+]

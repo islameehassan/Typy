@@ -22,5 +22,5 @@ make
 - The user has a rank according to their speed, e.g., speed <=20 is a newbie. 
 - There is no time limit, but you will lose if you reach 15 errors.
 ## UI
-![alt text](https://github.com/islameehassan/Typy/blob/main/Images/UI.png?raw=true])
-![alt text](https://github.com/islameehassan/Typy/blob/main/Images/UI2.png?raw=true])
+![alt text](https://github.com/islameehassan/Typy/blob/main/resources/Images/UI.png?raw=true])
+![alt text](https://github.com/islameehassan/Typy/blob/main/resources/Images/UI2.png?raw=true])

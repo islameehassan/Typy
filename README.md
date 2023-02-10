@@ -3,7 +3,7 @@
 Typy is a small application built using SFML, a multimedia library, for caculating typing speed.
 
 ## Build
-To build the project, you have to have ![SFML](https://www.sfml-dev.org/tutorials/2.5/) installed.
+To build the project, you have to have [SFML](https://www.sfml-dev.org/tutorials/2.5/) installed.
 After installation, follow the steps below to build and run the game.
 ```
 cd build

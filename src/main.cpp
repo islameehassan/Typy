@@ -1,17 +1,21 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <time.h>
 #include "Game.h"
 
 
-using namespace std;
 
+using namespace std;
 int main()
 {
 	srand(time(NULL));
 
 	//Init the words vector
-	ifstream randomwordsFILE("randomwords.txt");
-	if (!randomwordsFILE.is_open())
+	ifstream randomwordsFILE("/home/islam/sfml/Typy/RandomWords.txt");
+	if (!randomwordsFILE.is_open()){
 		return EXIT_FAILURE;
+	}
 
 	vector<string> RandomWords;
 	RandomWords.reserve(3000);

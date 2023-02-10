@@ -1,10 +1,12 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
+
+#include "config.h"
 
 using namespace std;
 using namespace sf;
@@ -30,6 +32,8 @@ const int MAX_Errors = 15;
 const int AVERAGEWORD_LENGTH = 6;
 const int WINDOW_HEIGHT = 400;
 const int WINDOW_WIDTH = 800;
+
+const string RESOURCES_LOCATION = RESOURCE_PATH;
 
 class Game {
 	RenderWindow window;

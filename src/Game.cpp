@@ -3,9 +3,9 @@
 void Game::initText()
 {
 	// initialize fonts
-	if (!arialFont.loadFromFile("Fonts/arial.ttf"))
+	if (!arialFont.loadFromFile(RESOURCES_LOCATION + "Fonts/arial.ttf"))
 		cout << "Could not load the floating words font!!!!\n";
-	if(!guiFont.loadFromFile("Fonts/Sunny Spells.ttf"))
+	if(!guiFont.loadFromFile(RESOURCES_LOCATION + "Fonts/Sunny Spells.ttf"))
 		cout << "Could not load the GUI font!!!!\n";
 
 	// initialize texts
@@ -69,9 +69,9 @@ void Game::initText()
 void Game::initSound()
 {
 	// initialize Buffers
-	if (!correctAnswerBuffer.loadFromFile("Sound/pop.wav"))
+	if (!correctAnswerBuffer.loadFromFile(RESOURCES_LOCATION + "Sound/pop.wav"))
 		cout << "Could not load the pop buffer!!!!\n";
-	if (!wrongAnswerBuffer.loadFromFile("Sound/wrong.wav"))
+	if (!wrongAnswerBuffer.loadFromFile(RESOURCES_LOCATION + "Sound/wrong.wav"))
 		cout << "Could not load the wrong buffer!!!!\n";
 
 	CorrectAnswer.setBuffer(correctAnswerBuffer);
@@ -172,10 +172,7 @@ Game::Game(vector<string> RandomWords)
 
 Game::~Game()
 {
-	cout << matchedWordCharacterLength << " " << GameTime.asSeconds() << '\n';
-
-	for (string str : UncorrectedErrors)
-		cout << str << "\n";
+	cout << "TYPY " << PROJECT_VERSION_MAJOR << "." << PROJECT_VERSION_MINOR << '\n';
 }
 
 const bool Game::isrunning() const
@@ -261,8 +258,7 @@ void Game::updateUI()
 {
 	//Word Entry Box
 	if (!wordMatched) {
-		if(UserEnteredText.getString().getSize() <= 40)
-			UserEnteredText.setString(wordEntered);
+		UserEnteredText.setString(wordEntered);
 	}
 	else {
 		// Clearing the text
@@ -351,7 +347,7 @@ void Game::pollevents()
 		if(ev.type == Event::Closed)
 			window.close();
 		else if (ev.type == Event::TextEntered) {
-			if (ev.text.unicode < 128 && ev.text.unicode != '\b' && ev.text.unicode != ' ') { // not a backspace or a space
+			if (ev.text.unicode < 128 && ev.text.unicode != '\b' && ev.text.unicode != ' ' && wordEntered.size() <= 40) { // not a backspace or a space and max chars to avoid outofbound text
 				wordEntered += static_cast<char>(ev.text.unicode);
 			}
 		}

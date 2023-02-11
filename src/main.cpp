@@ -3,17 +3,16 @@
 #include <fstream>
 #include <time.h>
 #include "Game.h"
-
-
-
 using namespace std;
+
 int main()
 {
 	srand(time(NULL));
 
 	//Init the words vector
-	ifstream randomwordsFILE("/home/islam/sfml/Typy/RandomWords.txt");
+	ifstream randomwordsFILE(RESOURCES_LOCATION + "RandomWords.txt");
 	if (!randomwordsFILE.is_open()){
+		cout << "Could not find the Words file"
 		return EXIT_FAILURE;
 	}
 
@@ -28,7 +27,7 @@ int main()
 		total += word.length();
 		lines++;
 	}
-	cout << "Words Average Length is: " << total / lines << '\n';
+	// cout << "Words Average Length is: " << total / lines << '\n';
 
 	// Game Object
 	Game game(RandomWords);

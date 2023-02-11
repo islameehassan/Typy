@@ -12,7 +12,7 @@ int main()
 	//Init the words vector
 	ifstream randomwordsFILE(RESOURCES_LOCATION + "RandomWords.txt");
 	if (!randomwordsFILE.is_open()){
-		cout << "Could not find the Words file"
+		cout << "Could not find the Words file";
 		return EXIT_FAILURE;
 	}
 

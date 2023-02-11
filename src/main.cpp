@@ -12,7 +12,7 @@ int main()
 	srand(time(NULL));
 
 	//Init the words vector
-	ifstream randomwordsFILE(RESOURCES_LOCATION + "RandomWords.txt");
+	ifstream randomwordsFILE("/home/islam/sfml/Typy/RandomWords.txt");
 	if (!randomwordsFILE.is_open()){
 		return EXIT_FAILURE;
 	}
@@ -28,7 +28,7 @@ int main()
 		total += word.length();
 		lines++;
 	}
-	// cout << "Words Average Length is: " << total / lines << '\n';
+	cout << "Words Average Length is: " << total / lines << '\n';
 
 	// Game Object
 	Game game(RandomWords);

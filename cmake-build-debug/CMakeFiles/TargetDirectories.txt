@@ -1,3 +1,0 @@
-/home/islam/sfml/Typy/cmake-build-debug/CMakeFiles/Typy.dir
-/home/islam/sfml/Typy/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/islam/sfml/Typy/cmake-build-debug/CMakeFiles/rebuild_cache.dir

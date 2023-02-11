@@ -48,9 +48,3 @@ set_target_properties(Typy
 
 # Link executable to required SFML modules
 target_link_libraries(Typy sfml-graphics sfml-audio)
-
-# install executable
-install(TARGETS Typy DESTINATION bin)
-
-# install resources
-install(DIRECTORY resources DESTINATION /share/${CMAKE_PROJECT_NAME})

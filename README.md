@@ -3,7 +3,7 @@
 Typy is a small application built using SFML, a multimedia library, for caculating typing speed.
 
 ## Build
-To build the project, you have to have ![SFML](https://www.sfml-dev.org/tutorials/2.5/) installed.
+To build the project, you have to have [SFML](https://www.sfml-dev.org/tutorials/2.5/) installed.
 After installation, follow the steps below to build and run the game.
 ```
 cd build
@@ -22,5 +22,5 @@ make
 - The user has a rank according to their speed, e.g., speed <=20 is a newbie. 
 - There is no time limit, but you will lose if you reach 15 errors.
 ## UI
-![alt text](https://github.com/islameehassan/Typy/blob/main/Images/UI.png?raw=true])
-![alt text](https://github.com/islameehassan/Typy/blob/main/Images/UI2.png?raw=true])
+![alt text](https://github.com/islameehassan/Typy/blob/main/resources/Images/UI.png?raw=true])
+![alt text](https://github.com/islameehassan/Typy/blob/main/resources/Images/UI2.png?raw=true])

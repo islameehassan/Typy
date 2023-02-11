@@ -1,0 +1,9 @@
+/usr/local/bin/Typy
+/share/Typy/resources/RandomWords.txt
+/share/Typy/resources/Images/UI2.png
+/share/Typy/resources/Images/UI.png
+/share/Typy/resources/Sound/wrong.wav
+/share/Typy/resources/Sound/test.wav
+/share/Typy/resources/Sound/pop.wav
+/share/Typy/resources/Fonts/arial.ttf
+/share/Typy/resources/Fonts/Sunny Spells.ttf

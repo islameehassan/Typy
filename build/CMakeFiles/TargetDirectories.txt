@@ -1,0 +1,7 @@
+/home/islam/sfml/Typy/build/CMakeFiles/Typy.dir
+/home/islam/sfml/Typy/build/CMakeFiles/edit_cache.dir
+/home/islam/sfml/Typy/build/CMakeFiles/rebuild_cache.dir
+/home/islam/sfml/Typy/build/CMakeFiles/list_install_components.dir
+/home/islam/sfml/Typy/build/CMakeFiles/install.dir
+/home/islam/sfml/Typy/build/CMakeFiles/install/local.dir
+/home/islam/sfml/Typy/build/CMakeFiles/install/strip.dir

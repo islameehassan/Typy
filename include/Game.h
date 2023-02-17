@@ -29,7 +29,7 @@ using namespace sf;
 const int MAX_WORDS_ONSCREEN = 8;
 const int MAX_WORDS = 2466;
 const int MAX_Errors = 15;
-const int AVERAGEWORD_LENGTH = 6;
+const int AVERAGEWORD_LENGTH = 4;
 const int WINDOW_HEIGHT = 400;
 const int WINDOW_WIDTH = 800;
 
